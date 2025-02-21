@@ -10,7 +10,7 @@ from xml.dom import minidom
 import chardet
 import pytz
 from PIL import Image
-from app.helper.sites import SitesHelper
+from app.helper.sites import SitesHelper, SiteSpider
 from apscheduler.schedulers.background import BackgroundScheduler
 from lxml import etree
 from requests import RequestException
@@ -25,7 +25,7 @@ from app.core.metainfo import MetaInfoPath
 from app.db.site_oper import SiteOper
 from app.helper.directory import DirectoryHelper
 from app.log import logger
-from app.modules.indexer import TorrentSpider
+# from app.modules.indexer import TorrentSpider
 from app.plugins import _PluginBase
 from app.schemas import MediaInfo, TransferInfo, TransferDirectoryConf
 from app.schemas.types import NotificationType
@@ -667,7 +667,7 @@ class ShortPlayMonitor(_PluginBase):
         if not page_source:
             logger.error(f"请求站点 {site.name} 失败")
             return None
-        _spider = TorrentSpider(indexer=index,
+        _spider = SiteSpider(indexer=index,
                                 page=1)
         torrents = _spider.parse(page_source)
         if not torrents:
